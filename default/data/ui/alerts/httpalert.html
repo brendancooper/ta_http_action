@@ -1,0 +1,39 @@
+<form class="form-horizontal form-complex">
+<div class="control-group">
+	<label class="control-label" for="httpalert_endpoint">Endpoint <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.httpalert.param.endpoint" id="httpalert_endpoint"/>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="httpalert_qs_params">Querystring Params  </label>
+    <div class="controls">
+	<input type="text" name="action.httpalert.param.qs_params" id="httpalert_qs_params"/>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="httpalert_custom_headers">Headers  </label>
+    <div class="controls">
+	<input type="text" name="action.httpalert.param.custom_headers" id="httpalert_headers"/>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="httpalert_payload">Body  </label>
+    <div class="controls">
+	<input type="text" name="action.httpalert.param.payload" id="httpalert_payload"/>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="httpalert_method">Method <span class="required">*</span> </label>
+    <div class="controls">
+<select name="action.httpalert.param.method" id="httpalert_method">
+        <option value="post">POST</option>
+        <option value="get">GET</option>
+        <option value="delete">DELETE</option>
+        <option value="patch">PATCH</option>
+        <option value="put">PUT</option>
+</select>
+    </div>
+</div>
+    
+</form>
