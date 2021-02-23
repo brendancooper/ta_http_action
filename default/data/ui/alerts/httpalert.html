@@ -1,39 +1,70 @@
 <form class="form-horizontal form-complex">
-<div class="control-group">
-	<label class="control-label" for="httpalert_endpoint">Endpoint <span class="required">*</span> </label>
-    <div class="controls">
-	<input type="text" name="action.httpalert.param.endpoint" id="httpalert_endpoint"/>
+    <div class="control-group">
+        <label class="control-label" for="httpalert_method">Method <span class="required">*</span> </label>
+        <div class="controls">
+            <splunk-select name="action.httpalert.param.method" id="httpalert_method">
+                <option value="post">POST</option>
+                <option value="get">GET</option>
+                <option value="delete">DELETE</option>
+                <option value="patch">PATCH</option>
+                <option value="put">PUT</option>
+            </splunk-select>
+        </div>
     </div>
-</div>
-<div class="control-group">
-	<label class="control-label" for="httpalert_qs_params">Querystring Params  </label>
-    <div class="controls">
-	<input type="text" name="action.httpalert.param.qs_params" id="httpalert_qs_params"/>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_endpoint">Endpoint <span class="required">*</span> </label>
+        <div class="controls">
+            <input type="text" name="action.httpalert.param.endpoint" id="httpalert_endpoint" />
+        </div>
     </div>
-</div>
-<div class="control-group">
-	<label class="control-label" for="httpalert_custom_headers">Headers  </label>
-    <div class="controls">
-	<input type="text" name="action.httpalert.param.custom_headers" id="httpalert_headers"/>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_qs_params">Querystring Params </label>
+        <div class="controls">
+            <input type="text" name="action.httpalert.param.qs_params" id="httpalert_qs_params" />
+        </div>
     </div>
-</div>
-<div class="control-group">
-	<label class="control-label" for="httpalert_payload">Body  </label>
-    <div class="controls">
-	<input type="text" name="action.httpalert.param.payload" id="httpalert_payload"/>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_custom_headers">Headers </label>
+        <div class="controls">
+            <input type="text" name="action.httpalert.param.custom_headers" id="httpalert_headers" />
+        </div>
     </div>
-</div>
-<div class="control-group">
-	<label class="control-label" for="httpalert_method">Method <span class="required">*</span> </label>
-    <div class="controls">
-<select name="action.httpalert.param.method" id="httpalert_method">
-        <option value="post">POST</option>
-        <option value="get">GET</option>
-        <option value="delete">DELETE</option>
-        <option value="patch">PATCH</option>
-        <option value="put">PUT</option>
-</select>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_payload">Body </label>
+        <div class="controls">
+            <splunk-text-area name="action.httpalert.param.payload" id="httpalert_payload"></splunk-text-area>
+        </div>
     </div>
-</div>
-    
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_http_proxy">HTTP Proxy </label>
+        <div class="controls">
+            <input type="text" name="action.httpalert.param.http_proxy" id="httpalert_http_proxy" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_https_proxy">HTTPS Proxy </label>
+        <div class="controls">
+            <input type="text" name="action.httpalert.param.https_proxy" id="httpalert_https_proxy" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_basic_user">Basic User </label>
+        <div class="controls">
+            <input type="text" name="action.httpalert.param.basic_user" id="httpalert_basic_user" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="httpalert_basic_pass">Basic Pass </label>
+        <div class="controls">
+            <input type="password" name="action.httpalert.param.basic_pass" id="httpalert_basic_pass" />
+        </div>
+    </div>
 </form>
