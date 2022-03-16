@@ -27,6 +27,12 @@ def helper_get_requests_func(method):
     elif method == "put":
         return requests.put
 
+def helper_get_verify_ssl_func(verify_ssl_certificate):
+    if verify_ssl_certificate == "1":
+        return True
+    elif verify_ssl_certificate == "0":
+        return False
+
 def process(data):    
     configuration = data['configuration']
     results = data['result']
@@ -35,9 +41,11 @@ def process(data):
     input_custom_headers = configuration.get('custom_headers')
     payload = configuration.get('payload')
     method = configuration.get('method')
+    verify_ssl_certificate = configuration.get('verify_ssl_certificate')
     qs_params = configuration.get('qs_params')
     timeout = 30
     custom_headers = {}
+    verify_ssl_certificate = helper_get_verify_ssl_func(verify_ssl_certificate)
     requests_func = helper_get_requests_func(method)
 
     if input_custom_headers is not None and len(input_custom_headers) > 0:
@@ -53,7 +61,7 @@ def process(data):
         logging.info("ERROR httpalert job={} endpoint={} endpoint does not start https:// ".format(data['sid'],endpoint))
         return
 
-    response = requests_func(endpoint, params=qs_params, data=payload, headers=custom_headers, timeout=timeout)
+    response = requests_func(endpoint, params=qs_params, data=payload, headers=custom_headers, timeout=timeout, verify=verify_ssl_certificate)
     logging.info("httpalert Job={} endpoint={} status_code={} ".format(data['sid'],endpoint,response.status_code))
     
 
@@ -67,6 +75,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "--test":
         "configuration" : {
             'endpoint' : "https://example.com/post",
             'method' : "post",
+            'verify_ssl_certificate' : "True",
             'qs_params' : "test=true",
             'payload' : "This is the body"
         },
@@ -76,4 +85,3 @@ if len(sys.argv) > 1 and sys.argv[1] == "--test":
         }
     }
     process(data)
-
