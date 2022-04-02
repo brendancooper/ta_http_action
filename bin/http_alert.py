@@ -2,9 +2,11 @@
 # encoding = utf-8
 import logging
 import json
-import re
 import requests
 import sys
+
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logging.root
 logging.root.setLevel(logging.INFO)
@@ -28,10 +30,10 @@ def helper_get_requests_func(method):
         return requests.put
 
 def helper_get_verify_ssl_func(verify_ssl_certificate):
-    if verify_ssl_certificate == "1":
-        return True
-    elif verify_ssl_certificate == "0":
+    if verify_ssl_certificate == "0":
         return False
+    else:
+        return True
 
 def process(data):    
     configuration = data['configuration']
@@ -41,11 +43,10 @@ def process(data):
     input_custom_headers = configuration.get('custom_headers')
     payload = configuration.get('payload')
     method = configuration.get('method')
-    verify_ssl_certificate = configuration.get('verify_ssl_certificate')
     qs_params = configuration.get('qs_params')
     timeout = 30
     custom_headers = {}
-    verify_ssl_certificate = helper_get_verify_ssl_func(verify_ssl_certificate)
+    verify_ssl_certificate = helper_get_verify_ssl_func(configuration.get('verify_ssl_certificate',"1"))
     requests_func = helper_get_requests_func(method)
 
     if input_custom_headers is not None and len(input_custom_headers) > 0:
@@ -68,7 +69,7 @@ def process(data):
 if len(sys.argv) > 1 and sys.argv[1] == "--execute":
     data = json.load(sys.stdin)
     process(data)
-    pass
+
 
 if len(sys.argv) > 1 and sys.argv[1] == "--test":
     data = {
