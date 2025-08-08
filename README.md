@@ -1,7 +1,7 @@
 TA_HTTP_ACTION
 ==============
-Last Updated: 2nd April 2022
+Last Updated: 16th May 2024
 
 Custom Alert Action developed to send a customised HTTP request
 
-Brendan Cooper, JDS Australia
+Brendan Cooper: https://github.com/brendancooper/ta_http_action

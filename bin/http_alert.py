@@ -48,12 +48,12 @@ def process(data):
     custom_headers = {}
     verify_ssl_certificate = helper_get_verify_ssl_func(configuration.get('verify_ssl_certificate',"1"))
     requests_func = helper_get_requests_func(method)
-
+    separator = configuration.get('custom_separator',"=")
     if input_custom_headers is not None and len(input_custom_headers) > 0:
         header_dict = input_custom_headers.split("&")
         if len(header_dict) > 0:
             for value in header_dict:
-                key, value = value.split("=")
+                key, value = value.split(separator)
                 custom_headers[key]=value
     else:
         custom_headers=None

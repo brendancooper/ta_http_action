@@ -12,10 +12,18 @@
     </div>
 </div>
 <div class="control-group">
-	<label class="control-label" for="httpalert_custom_headers">Headers  </label>
+	<label class="control-label" for="httpalert_custom_headers">Headers</label>
     <div class="controls">
 	<input type="text" name="action.httpalert.param.custom_headers" id="httpalert_headers"/>
     </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="httpalert_custom_separator">Headers Key-Value Separator</label>
+    <div class="controls">
+	<input type="text" name="action.httpalert.param.custom_separator" id="httpalert_separator"/>
+    <span class="help-block">Used to modify which character(s) is used to delimit key-value pairs. If blank '=' is used by default. This can be a problem where the value of the header contains an '='.</span>
+    </div>
+    
 </div>
 <div class="control-group">
 	<label class="control-label" for="httpalert_payload">Body  </label>
