@@ -7,8 +7,6 @@ import sys
 
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-logging.root
 logging.root.setLevel(logging.INFO)
 formatter = logging.Formatter('%(levelname)s %(message)s')
 handler = logging.StreamHandler(stream=sys.stderr)
@@ -44,7 +42,12 @@ def process(data):
     payload = configuration.get('payload')
     method = configuration.get('method')
     qs_params = configuration.get('qs_params')
-    timeout = 30
+    temp_t = configuration.get('timeout',30)
+    if type(temp_t) is int and 1<= temp_t <= 300:
+        timeout = temp_t
+    else:
+        timeout = 30
+    
     custom_headers = {}
     verify_ssl_certificate = helper_get_verify_ssl_func(configuration.get('verify_ssl_certificate',"1"))
     requests_func = helper_get_requests_func(method)
@@ -59,7 +62,7 @@ def process(data):
         custom_headers=None
 
     if not endpoint.startswith("https://"):
-        logging.info("ERROR httpalert job={} endpoint={} endpoint does not start https:// ".format(data['sid'],endpoint))
+        logging.info("WARN httpalert job={} endpoint={} endpoint does not start https:// ".format(data['sid'],endpoint))
         return
 
     response = requests_func(endpoint, params=qs_params, data=payload, headers=custom_headers, timeout=timeout, verify=verify_ssl_certificate)
