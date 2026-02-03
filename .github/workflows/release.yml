@@ -33,19 +33,15 @@ jobs:
 
       - name: Create package directory
         run: |
-          mkdir -p package
+          mkdir -p ta_http_action
           
       - name: Copy app files
         run: |
-          cp -r bin default README README.md LICENSE CONTRIBUTORS metadata appserver package/
+          cp -r bin default README README.md LICENSE CONTRIBUTORS metadata appserver ta_http_action/
           
       - name: Create tarball package
         run: |
-          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --exclude-vcs --exclude='.github' --owner=splunk --group=splunk package
-          mv ta_http_action-${{ steps.version.outputs.version }}.tar.gz package/
-          echo "Created package: package/ta_http_action-${{ steps.version.outputs.version }}.tar.gz"
-          cd package
-          ls -la
+          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --exclude-vcs --exclude='.github' --owner=splunk --group=splunk ta_http_action
 
       - name: Generate release notes
         id: release_notes
@@ -70,9 +66,9 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: ta_http_action v${{ steps.version.outputs.version }}
-          body_path: package/release_notes.md
+          body_path: release_notes.md
           files: |
-            package/ta_http_action-*.tar.gz
+            ta_http_action-*.tar.gz
           draft: false
           prerelease: false
         env:
