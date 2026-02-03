@@ -41,8 +41,10 @@ jobs:
           
       - name: Create tarball package
         run: |
+          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --exclude-vcs --exclude='.github' --owner=splunk --group=splunk package
+          mv ta_http_action-${{ steps.version.outputs.version }}.tar.gz package/
+          echo "Created package: package/ta_http_action-${{ steps.version.outputs.version }}.tar.gz"
           cd package
-          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --exclude-vcs --exclude='.github' --owner=splunk --group=splunk .
           ls -la
 
       - name: Generate release notes
