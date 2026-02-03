@@ -37,13 +37,12 @@ jobs:
           
       - name: Copy app files
         run: |
-          cp -r . package/
-          rm -rf package/.github package/.git
+          cp -r bin default README README.md LICENSE CONTRIBUTORS metadata appserver package/
           
       - name: Create tarball package
         run: |
           cd package
-          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --owner=splunk --group=splunk .
+          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --exclude-vcs --exclude='.github' --owner=splunk --group=splunk .
           ls -la
 
       - name: Generate release notes
