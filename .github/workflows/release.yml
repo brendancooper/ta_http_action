@@ -19,7 +19,7 @@ jobs:
       - name: Extract version from app.conf
         id: version
         run: |
-          VERSION=$(grep -A1 '\[launcher\]' default/app.conf | grep 'version' | cut -d'=' -f2 | xargs)
+          VERSION=$(awk '/\[launcher\]/{flag=1;next}/\[/{flag=0}flag && /^version\s*=/{gsub(/^[^=]*=\s*/,"");print}' default/app.conf | xargs)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
