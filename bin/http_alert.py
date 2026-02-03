@@ -65,7 +65,7 @@ def process(data):
         logging.info("WARN httpalert job={} endpoint={} endpoint does not start https:// ".format(data['sid'],endpoint))
         return
 
-    response = requests_func(endpoint, params=qs_params, data=payload, headers=custom_headers, timeout=timeout, verify=verify_ssl_certificate)
+    response = requests_func(endpoint, params=qs_params, data=payload.encode("utf-8"), headers=custom_headers, timeout=timeout, verify=verify_ssl_certificate)
     logging.info("httpalert Job={} endpoint={} status_code={} ".format(data['sid'],endpoint,response.status_code))
     
 

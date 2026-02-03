@@ -1,0 +1,77 @@
+name: Package and Release Splunk App
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  package-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from app.conf
+        id: version
+        run: |
+          VERSION=$(grep -A1 '\[launcher\]' default/app.conf | grep 'version' | cut -d'=' -f2 | xargs)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Validate version
+        run: |
+          if [ -z "${{ steps.version.outputs.version }}" ]; then
+            echo "Error: Could not extract version from default/app.conf"
+            exit 1
+          fi
+          echo "App version: ${{ steps.version.outputs.version }}"
+
+      - name: Create package directory
+        run: |
+          mkdir -p package
+          
+      - name: Copy app files
+        run: |
+          cp -r bin default package/
+          
+      - name: Create tarball package
+        run: |
+          cd package
+          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz * --exclude='.git' --exclude='.github'
+          ls -la
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          echo "## Splunk App Release ta_http_action ${{ steps.version.outputs.version }}" > release_notes.md
+          echo "" >> release_notes.md
+          echo "### Installation Instructions" >> release_notes.md
+          echo "1. Download the \`.tar.gz\` file below" >> release_notes.md
+          echo "2. In Splunk Web, navigate to **Apps > Manage Apps**" >> release_notes.md
+          echo "3. Click **Install app from file**" >> release_notes.md
+          echo "4. Upload the downloaded tarball and restart Splunk" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "### App Information" >> release_notes.md
+          echo "- **App Name:** HTTP Alert Action" >> release_notes.md
+          echo "- **Version:** ${{ steps.version.outputs.version }}" >> release_notes.md
+          echo "- **Description:** Send a HTTP request with a customised payload & headers" >> release_notes.md
+          
+          cat release_notes.md
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: ta_http_action v${{ steps.version.outputs.version }}
+          body_path: package/release_notes.md
+          files: |
+            package/ta_http_action-*.tar.gz
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
