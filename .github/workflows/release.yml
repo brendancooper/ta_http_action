@@ -19,7 +19,7 @@ jobs:
       - name: Extract version from app.conf
         id: version
         run: |
-          VERSION=$(grep -A1 '\[launcher\]' default/app.conf | grep 'version' | cut -d'=' -f2 | xargs)
+          VERSION=$(awk '/\[launcher\]/{flag=1;next}/\[/{flag=0}flag && /^version\s*=/{gsub(/^[^=]*=\s*/,"");print}' default/app.conf | xargs)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
 
@@ -33,17 +33,15 @@ jobs:
 
       - name: Create package directory
         run: |
-          mkdir -p package
+          mkdir -p ta_http_action
           
       - name: Copy app files
         run: |
-          cp -r bin default package/
+          cp -r bin default README README.md LICENSE CONTRIBUTORS metadata appserver ta_http_action/
           
       - name: Create tarball package
         run: |
-          cd package
-          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz * --exclude='.git' --exclude='.github'
-          ls -la
+          tar -czf ta_http_action-${{ steps.version.outputs.version }}.tar.gz --exclude-vcs --exclude='.github' --owner=splunk --group=splunk ta_http_action
 
       - name: Generate release notes
         id: release_notes
@@ -68,9 +66,9 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: ta_http_action v${{ steps.version.outputs.version }}
-          body_path: package/release_notes.md
+          body_path: release_notes.md
           files: |
-            package/ta_http_action-*.tar.gz
+            ta_http_action-*.tar.gz
           draft: false
           prerelease: false
         env:
